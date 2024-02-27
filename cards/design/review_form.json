@@ -1,0 +1,114 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": 2,
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text":  "Manage Review",
+                            "weight": "Bolder",
+                            "size": "Medium"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "The bot manages review.",
+                            "isSubtle": true,
+                            "wrap": true
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "Provide Addition detail abotu labels?",
+                            "isSubtle": true,
+                            "wrap": true,
+                            "size": "Small"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "Review Link",
+                            "wrap": true
+                        },
+                        {
+                            "type": "Input.Text",
+                            "id": "reviewlink",
+                            "placeholder": "Enter review link"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "Reviewers",
+                            "wrap": true
+                        },
+                        {
+                            "type": "Input.Text",
+                            "id": "reviewers",
+                            "placeholder": "enter reviewers list",
+                            "style": "Email"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "Mandatory Reviewers",
+                            "wrap": true
+                        },
+                        {
+                            "type": "Input.Text",
+                            "id": "mandatoryReviewers",
+                            "placeholder": "enter reviewers list",
+                            "style": "Email"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "Review Severity",
+                            "wrap": true
+                        },
+                        {
+                            "type": "Input.ChoiceSet",
+                            "id": "severity",
+                            "value": "reviewSeverity",
+                            "choices": [
+                                {
+                                    "title": "high",
+                                    "value": "1"
+                                },
+                                {
+                                    "title": "medium",
+                                    "value": "2"
+                                },
+                                {
+                                    "title": "low",
+                                    "value": "3"
+                                }
+                            ]           
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": 1,
+                    "items": [
+                        {
+                            "type": "Image",
+                            "url": "https://i.postimg.cc/wMJvqNR6/sign-up.jpg",
+                            "size": "auto"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "Submit",
+            "data": {
+              "cardType": "inputForm"
+            }
+
+        }
+    ]
+}
