@@ -47,15 +47,55 @@ module.exports = function(framework){
       });
       
       framework.hears(
-          "framework",
-          (bot) => {
-            console.log("framework command received");
-            bot.say(
-              "markdown",
-              "The primary purpose for the [webex-node-bot-framework](https://github.com/jpjpjp/webex-node-bot-framework) was to create a framework based on the [webex-jssdk](https://webex.github.io/webex-js-sdk) which continues to be supported as new features and functionality are added to Webex. This version of the project was designed with two themes in mind: \n\n\n * Mimimize Webex API Calls. The original flint could be quite slow as it attempted to provide bot developers rich details about the space, membership, message and message author. This version eliminates some of that data in the interests of efficiency, (but provides convenience methods to enable bot developers to get this information if it is required)\n * Leverage native Webex data types. The original flint would copy details from the webex objects such as message and person into various flint objects. This version simply attaches the native Webex objects. This increases the framework's efficiency and makes it future proof as new attributes are added to the various webex DTOs "
-            );
-          },
-          "**framework**: (learn more about the Webex Bot Framework)",
-          0
-        );
+        "create",
+        (bot) => {
+          console.log("say hi to everyone.  Its a party");
+          framework.webex.rooms
+            .create({title:  'TestRoomS'})
+            .then(function(team) {
+              console.log(team);
+
+              framework.webex.memberships.create({
+                personEmail: 'avattoly@cisco.com',
+                roomId: team.id
+              });
+            });
+        },
+        "**say hi to everyone**: (everyone gets a greeting using a call to the Webex SDK)",
+        0
+      );
+
+      framework.hears(
+        "message",
+        (bot) => {
+          console.log("Unicasting");
+          bot.webex.messages
+            .create({
+              text: 'Wazzuzpp!',
+              roomId: 'Y2lzY29zcGFyazovL3VzL1JPT00vMGU1ZTljNDAtZDYzYi0xMWVlLWFhY2ItOWI5YTg3MWRlYjJk'
+            })
+            .then(function(teams) {
+              console.log(teams);
+              return 'success';
+            });
+        },
+        "**say hi to everyone**: (everyone gets a greeting using a call to the Webex SDK)",
+        0
+      );
+
+      framework.hears(
+        "list",
+        (bot) => {
+          console.log("say hi to everyone.  Its a party");
+          bot.webex.teams
+            .list({max: 10})
+            .then(function(teams) {
+              console.log(teams);
+              return 'success';
+            });
+        },
+        "**say hi to everyone**: (everyone gets a greeting using a call to the Webex SDK)",
+        0
+      );
+
 }

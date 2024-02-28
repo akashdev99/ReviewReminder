@@ -1,6 +1,5 @@
-var framework = require("webex-node-bot-framework");
 var webhook = require("webex-node-bot-framework/webhook");
-require("dotenv").config();
+var config = require("./config/config")
 
 const mongodb = require("./database/db");
 mongodb.connect(process.env.MONGODB);
@@ -11,21 +10,11 @@ var app = express();
 app.use(bodyParser.json());
 app.use(express.static("images"));
 
-const config = {
-  webhookUrl: process.env.WEBHOOKURL,
-  token: process.env.BOTTOKEN,
-  port: process.env.PORT,
-};
-
-// init framework
-var framework = new framework(config);
-framework.start();
-console.log("Starting framework, please wait...");
+var framework = require("./framework/framework")
 
 require("./controller/basicControllers")(framework)
 require("./controller/reviewControllers")(framework)
 
-//Server config & housekeeping
 // Health Check
 app.get("/", (req, res) => {
   res.send(`I'm alive.`);
