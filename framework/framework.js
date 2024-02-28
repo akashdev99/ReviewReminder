@@ -1,8 +1,8 @@
-var framework = require("webex-node-bot-framework");
-var config = require("../config/config")
+import Framework from "webex-node-bot-framework";
+import config from "../config/config.js";
 
-var framework = new framework(config);
+var framework = new Framework(config);
 framework.start();
 console.log("Starting framework, please wait...");
 
-module.exports = framework;
+export default framework;

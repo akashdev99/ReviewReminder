@@ -1,4 +1,4 @@
-module.exports = function(framework){
+export default function(framework){
     framework.on("initialized", () => {
         console.log("framework is all fired up! [Press CTRL-C to quit]");
       });

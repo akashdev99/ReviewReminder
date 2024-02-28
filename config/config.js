@@ -1,8 +1,9 @@
-require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
 const config = {
     webhookUrl: process.env.WEBHOOKURL,
     token: process.env.BOTTOKEN,
     port: process.env.PORT,
   };
 
-module.exports = config;
+export default config;

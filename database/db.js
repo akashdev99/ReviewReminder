@@ -1,7 +1,7 @@
-const mongo = require('mongodb');
+import mongo  from 'mongodb';
 
 let db;
-module.exports = {
+export default {
         async connect(uri) {
             const mongoClient = new mongo.MongoClient(uri);
             await mongoClient.connect();
@@ -13,5 +13,9 @@ module.exports = {
     async savePr(data) {
         let  review =db.collection("review");
         await review.insertOne(data)
+    },
+    async getAllReviews() {
+        let  review =db.collection("review");
+        return await review.find();
     },
 };

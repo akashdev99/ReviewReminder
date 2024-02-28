@@ -1,19 +1,22 @@
-var webhook = require("webex-node-bot-framework/webhook");
-var config = require("./config/config")
+import  webhook from "webex-node-bot-framework/webhook.js";
+import config from "./config/config.js";
 
-const mongodb = require("./database/db");
+import mongodb from "./database/db.js";
 mongodb.connect(process.env.MONGODB);
 
-var express = require("express");
-var bodyParser = require("body-parser");
+import express from "express";
+import bodyParser from "body-parser";
 var app = express();
 app.use(bodyParser.json());
 app.use(express.static("images"));
 
-var framework = require("./framework/framework")
+import framework from "./framework/framework.js";
 
-require("./controller/basicControllers")(framework)
-require("./controller/reviewControllers")(framework)
+import basicController from "./controller/basicControllers.js";
+import reviewControllers from "./controller/reviewControllers.js";
+
+basicController(framework);
+reviewControllers(framework);
 
 // Health Check
 app.get("/", (req, res) => {

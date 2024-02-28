@@ -1,9 +1,10 @@
-const mongodb = require("../database/db");
-const { v4: uuidv4 } = require('uuid');
+import mongodb from "../database/db.js";
+import v4 from 'uuid';
+import review_form from './design/review_form.json' assert { type: "json" };;
 
 class ReviewForm {
     constructor(contentType) {
-      this.card = require('./design/review_form.json');
+      this.card = review_form;
       this.contentType = contentType;
     }
   
@@ -29,7 +30,7 @@ class ReviewForm {
       let inputs = attachmentAction.inputs;
       console.log(inputs);
       reviewers:inputs.reviewers.sp
-      var reviewObj = {id:uuidv4() , pr:inputs.reviewlink , reviewers:getNameList(inputs.reviewers) , mandatoryreviewers:getNameList(inputs.mandatoryReviewers), severity: inputs.severity};
+      var reviewObj = {id:v4() , pr:inputs.reviewlink , reviewers:getNameList(inputs.reviewers) , mandatoryreviewers:getNameList(inputs.mandatoryReviewers), severity: inputs.severity};
       try {
           await mongodb.savePr(reviewObj);
           bot.reply(attachmentAction, "Onboarded review")
@@ -41,4 +42,4 @@ class ReviewForm {
   
   };
   
-  module.exports = ReviewForm;
+ export default ReviewForm;

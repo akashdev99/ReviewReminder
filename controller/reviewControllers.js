@@ -1,7 +1,7 @@
-ReviewForm = require('../cards/review-form')
+import ReviewForm from '../cards/review-form.js';
 let reviewForm = new ReviewForm('application/vnd.microsoft.card.adaptive');
 
-module.exports = function(framework){
+export default function(framework){
     // Process an Action.Submit button press
     framework.on('attachmentAction', function (bot, trigger) {
     if (trigger.type != 'attachmentAction') {
