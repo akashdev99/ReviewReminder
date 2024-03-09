@@ -1,11 +1,11 @@
 import mongo from "../database/mongo.js"
 import framework from "../framework/framework.js";
-
+import ReportGenerator from "./reporter/reportGenerator.js"
 
 const WebexSpaceTitle = "Review Report";
-
 class BotMessager {
     reviewerRooms ={};
+    reportGenerator = new ReportGenerator();
 
     async sendMessage(reviewerInfo) {
         if(Object.keys(this.reviewerRooms).length==0) {
@@ -16,40 +16,45 @@ class BotMessager {
         }
 
         Object.keys(reviewerInfo).forEach(
-        reviewerId=>{
+        async reviewerId=>{
+            let report = await this.reportGenerator.generateReport(reviewerInfo[reviewerId]);
+
            if (this.reviewerRooms[reviewerId]){
             let reviewerRoomId = this.reviewerRooms[reviewerId];
-            
-            framework.webex.messages
-            .create({
-              text: 'Wazzuzpp!',
-              roomId: reviewerRoomId,
-            })
-            .then((teams) => {
-              console.log(teams);
-              return 'success';
-            });
-             
+            this.sendUnicast(reviewerRoomId , report);     
            }else{
                 framework.webex.rooms
                 .create({title:  WebexSpaceTitle})
-                .then((team) => {
-                    console.log(team);
-                    console.log(reviewerId);
-
-                 
+                .then((team) => {                 
                     framework.webex.memberships.create({
                         personEmail: reviewerId,
                         roomId: team.id
+                    }).then(()=>{
+                        this.sendUnicast(team.id , report);
+                        mongo.UserWebexRooms.addUserRoom({Id: reviewerId , roomId: team.id});
+                        this.reviewerRooms[reviewerId] = team.Id;
                     }).catch((err)=>{
-                        console.log(err);
+                        console.log("Failed to send message:",err);
                     });
-                    
-                    mongo.UserWebexRooms.addUserRoom({Id: reviewerId , roomId: team.id})
                 });
            }
         })
     }
+
+    async sendUnicast(roomId , message){
+        framework.webex.messages
+            .create({
+              text: message,
+              roomId: roomId,
+            })
+            .then((teams) => {
+              console.log("Report sent successfully");
+              return 'success';
+        }).catch((error) => {
+            console.log("Report failed to send",error);
+        });
+    }
+
 }
 
 export default BotMessager;
