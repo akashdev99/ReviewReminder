@@ -11,9 +11,9 @@ If above does not work use via docker :
 docker run --net=host -it -e NGROK_AUTHTOKEN=<auth_token_here> ngrok/ngrok:latest http host.docker.internal:3000 --region=eu
 
 
-2) docker run -d -p 27017:27017 --name=mongo-bot mongo:latest
+2) run : docker-compose up
 
-Acess db on docker using : docker exec -it mongo-bot mongosh
+Access db on docker using : docker exec -it mongo-bot mongosh
 
 3) make .env files with public address and TOKEN , format :
 ```
