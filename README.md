@@ -20,7 +20,7 @@ Acess db on docker using : docker exec -it mongo-bot mongosh
 BOTTOKEN - Set this to the token for your bot that you got in step 1
 PORT - Set this to the port you set when you started ngrok in step 3 (ie: 3000)
 WEBHOOKURL - Set this to the ip address that you copied in step 4
-
+SCHEDULER_TIME = Set time at which scheduler should trigger the alerts to reviewers ex: "45 12 * * *" . formay "MM HH DD MM YY"
 ```
 
 4) Start bot server :

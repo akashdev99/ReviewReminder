@@ -1,37 +1,35 @@
 import schedule from 'node-schedule';
-import framework from "../framework/framework.js";
-
 import mongo from "../database/mongo.js"
-import { Queue } from '@datastructures-js/queue';
-
 import BotMessager from './botmessager.js';
 
-class Scheduler {
+export default class Scheduler {
     severity = ['1','2','3']
-    triggerTime = new Date();
+    // 12:30 IST by default 
+    triggerTime = "30 12 * * *";
     botMessager= new BotMessager();
     
     constructor(severity, triggerTime) {
         this.severity = severity;
         this.triggerTime = triggerTime
     }
-    
 
-    scheduleJob(task){
-        console.log("Scheduling a job");
-        let current=  new Date();
-        let later = new Date(current.getTime() + 600);
-        const job = schedule.scheduleJob(later,
-            
+    scheduleRecurringJob(){
+        schedule.scheduleJob(this.triggerTime,
+            async ()=>{
+            console.log("scheduled called");
+            let reviewerInfo  = await this.loadReviewerInfo();
+            this.botMessager.sendMessage(reviewerInfo);            
+            }
+        );
+    }
+    
+    scheduleJobAtDateTime(time){
+        schedule.scheduleJob(time,
             async ()=>{
             let reviewerInfo  = await this.loadReviewerInfo();
-            console.log(reviewerInfo);
-
             this.botMessager.sendMessage(reviewerInfo);            
-            console.log("yup here outside")
             }
-            );
-        console.log(job);
+        );
     }
 
     async loadReviewerInfo(){
@@ -45,15 +43,13 @@ class Scheduler {
                     severity : element.severity,
                 }
 
-                if(reviewerInfo[reviewer]){
-                    reviewerInfo[reviewer].push(reviewObj);
+                if (reviewerInfo[reviewer]){
+                    reviewerInfo[reviewer].push(reviewObj)
                 }else{
                     reviewerInfo[reviewer] = [reviewObj];
-                }
+                } 
            })
         });
         return reviewerInfo;
     }
 }
-
-export default Scheduler;

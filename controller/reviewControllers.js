@@ -22,7 +22,7 @@ export default function(framework){
             console.log("someone asked for a card");
             reviewForm.renderCard(bot);
         },
-        "**card me**: (a cool card!)",
+        "**manage review**: (Form to onboard a review with reviewers)",
         0
     );
 
@@ -31,16 +31,14 @@ export default function(framework){
         async (bot, trigger) => {
             await scheduler.loadReviewerInfo()
         },
-        "**card me**: (a cool card!)",
         0
     );
 
     framework.hears(
         "schedule",
         () => {
-            scheduler.scheduleJob()
+            scheduler.scheduleJobAtDateTime(new Date(current.getTime() + 600))
         },
-        "**card me**: (a cool card!)",
         0
     );
 }

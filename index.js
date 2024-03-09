@@ -1,7 +1,7 @@
 import  webhook from "webex-node-bot-framework/webhook.js";
 import config from "./config/config.js";
 import mongo from "./database/mongo.js"
-
+import Scheduler from "./scheduler/scheduler.js";
 
 import express from "express";
 import bodyParser from "body-parser";
@@ -16,6 +16,8 @@ import reviewControllers from "./controller/reviewControllers.js";
 
 async function start() {
   await mongo.init();
+  let allSeverityScheduler = new Scheduler([1,2,3] , process.env.SCHEDULER_TIME);
+  allSeverityScheduler.scheduleRecurringJob();
 }
 start();
 
