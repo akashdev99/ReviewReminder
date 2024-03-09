@@ -21,7 +21,7 @@ export default function(framework){
           bot.webex.people
             .get(actorId)
             .then((user) => {
-              msg = `Hello there ${user.displayName}. ${msg}`;
+              msg = `Hello  , I am ReviewRabbit . I have opened this space to help track , remind and prioritize your reviews . ${msg}`;
             })
             .catch((e) => {
               console.error(
@@ -35,7 +35,7 @@ export default function(framework){
                 bot.say("markdown", msg);
               } else {
                 let botName = bot.person.displayName;
-                msg += `\n\nDon't forget, in order for me to see your messages in this group space, be sure to *@mention* ${botName}.`;
+                // msg += `\n\nDon't forget, in order for me to see your messages in this group space, be sure to *@mention* ${botName}.`;
                 bot.say("markdown", msg);
               }
             });

@@ -2,9 +2,8 @@
   "name": "Webex-Bot-Starter",
   "version": "1.0.0",
   "description": "Starter template for creating a Webex Teams bot",
-
   "exports": "./index.js",
-"type": "module",
+  "type": "module",
   "scripts": {
     "start": "npm install && node --use_strict index.js"
   },
@@ -24,6 +23,7 @@
   },
   "homepage": "https://github.com/tbd/webexbotstarter#readme",
   "dependencies": {
+    "@datastructures-js/queue": "^4.2.3",
     "body-parser": "^1.15.2",
     "dotenv": "^16.0.3",
     "express": "^4.14.0",

@@ -1,4 +1,4 @@
-import mongodb from "../database/db.js";
+import mongo from "../database/mongo.js"
 import v4 from 'uuid';
 import review_form from './design/review_form.json' assert { type: "json" };;
 
@@ -29,12 +29,11 @@ class ReviewForm {
     async  handleSubmit(attachmentAction, submitter, bot) {
       let inputs = attachmentAction.inputs;
       console.log(inputs);
-      reviewers:inputs.reviewers.sp
-      var reviewObj = {id:v4() , pr:inputs.reviewlink , reviewers:getNameList(inputs.reviewers) , mandatoryreviewers:getNameList(inputs.mandatoryReviewers), severity: inputs.severity};
+      var reviewObj = {id:v4() , pr:inputs.reviewlink , reviewers:this.getNameList(inputs.reviewers) , severity: inputs.severity};
       try {
-          await mongodb.savePr(reviewObj);
-          bot.reply(attachmentAction, "Onboarded review")
-          .catch((e) => console.log("something went wrong "));
+        await mongo.Review.addReview(reviewObj);
+        bot.reply(attachmentAction, "Onboarded review")
+        .catch((e) => console.log("something went wrong "));
       }catch(err) {
           console.log("Something went wrong",err);
       }

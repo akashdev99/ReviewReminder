@@ -1,51 +1,59 @@
-const schedule = require('node-schedule');
-var framework = require("./framework/framework")
-const mongodb = require("../database/db");
+import schedule from 'node-schedule';
+import framework from "../framework/framework.js";
+
+import mongo from "../database/mongo.js"
+import { Queue } from '@datastructures-js/queue';
+
+import BotMessager from './botmessager.js';
 
 class Scheduler {
-    // constructor(bot,messa){
-    //     this.bot = bot;
-    //     this.message = message;
-    // }
+    severity = ['1','2','3']
+    triggerTime = new Date();
+    botMessager= new BotMessager();
+    
+    constructor(severity, triggerTime) {
+        this.severity = severity;
+        this.triggerTime = triggerTime
+    }
+    
 
+    scheduleJob(task){
+        console.log("Scheduling a job");
+        let current=  new Date();
+        let later = new Date(current.getTime() + 600);
+        const job = schedule.scheduleJob(later,
+            
+            async ()=>{
+            let reviewerInfo  = await this.loadReviewerInfo();
+            console.log(reviewerInfo);
 
-    async groupReviews(){
-        let x = await getAllReviews();
-        console.log(x);
+            this.botMessager.sendMessage(reviewerInfo);            
+            console.log("yup here outside")
+            }
+            );
+        console.log(job);
+    }
+
+    async loadReviewerInfo(){
+        const reviews = await mongo.Review.getAllReviews();
+
+        let reviewerInfo ={};
+        reviews.forEach(element => {
+           element.reviewers.forEach((reviewer)=>{
+                let reviewObj = {
+                    reviewLink: element.pr,
+                    severity : element.severity,
+                }
+
+                if(reviewerInfo[reviewer]){
+                    reviewerInfo[reviewer].push(reviewObj);
+                }else{
+                    reviewerInfo[reviewer] = [reviewObj];
+                }
+           })
+        });
+        return reviewerInfo;
     }
 }
 
-module.exports = Scheduler;
-
-// module.exports = {
-//     startup(){
-//         //check PR DB
-//         //re-add all cron schedule on restart 
-//     },
-//     addScheduler(bot,message){
-//         console.log("Add a scheduler here!!");
-//         let current=  new Date();
-//         let later = new Date(current.getTime() + 600);
-//         console.log(current);
-//         const job = schedule.scheduleJob(later,async ()=>{
-//             console.log("yup here")
-//             // console.log(bot);
-//             console.log("=====");
-            
-//             let room = await framework.webex.rooms.create({title: 'botkit test room'});
-//             console.log(room);
-
-
-//             // controller.trigger('scheduler_complete', [bot, message])
-//             //else use controller.on
-//             //controller.trigger
-            
-//             console.log("yup here outside")
-//           });
-//         console.log(job);
-//         //track teh scheduler
-//     },
-//     removeScheduler(){
-        
-//     },
-// }
+export default Scheduler;

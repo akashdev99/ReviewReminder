@@ -7,6 +7,10 @@ Start project :
 1) Start ngrok server :
 ngrok http 3000 --region=eu
 
+If above does not work use via docker :
+docker run --net=host -it -e NGROK_AUTHTOKEN=<auth_token_here> ngrok/ngrok:latest http host.docker.internal:3000 --region=eu
+
+
 2) docker run -d -p 27017:27017 --name=mongo-bot mongo:latest
 
 Acess db on docker using : docker exec -it mongo-bot mongosh

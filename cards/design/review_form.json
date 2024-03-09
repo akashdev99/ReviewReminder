@@ -52,17 +52,6 @@
                         },
                         {
                             "type": "TextBlock",
-                            "text": "Mandatory Reviewers",
-                            "wrap": true
-                        },
-                        {
-                            "type": "Input.Text",
-                            "id": "mandatoryReviewers",
-                            "placeholder": "enter reviewers list",
-                            "style": "Email"
-                        },
-                        {
-                            "type": "TextBlock",
                             "text": "Review Severity",
                             "wrap": true
                         },
