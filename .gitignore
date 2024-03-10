@@ -44,3 +44,6 @@ config.json
 
 #Environment Secrets
 .env
+
+#mongo db local
+db_data

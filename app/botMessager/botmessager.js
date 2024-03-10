@@ -1,13 +1,27 @@
-import mongo from "../database/mongo.js"
-import framework from "../framework/framework.js";
+import mongo from "../../database/mongo.js"
+import framework from "../../framework/framework.js";
 import ReportGenerator from "./reporter/reportGenerator.js"
 
 const WebexSpaceTitle = "Review Report";
-class BotMessager {
+export default class BotMessager {
     reviewerRooms ={};
     reportGenerator = new ReportGenerator();
 
-    async sendMessage(reviewerInfo) {
+    async sendUnicast(roomId , message){
+        framework.webex.messages
+            .create({
+              text: message,
+              roomId: roomId,
+            })
+            .then((teams) => {
+              console.log("Report sent successfully");
+              return 'success';
+        }).catch((error) => {
+            console.log("Report failed to send",error);
+        });
+    }
+
+    async sendReviewSummary(reviewerInfo) {
         if(Object.keys(this.reviewerRooms).length==0) {
             const userRooms = await mongo.UserWebexRooms.getAllUserRooms();
             userRooms.forEach(user => {
@@ -40,21 +54,4 @@ class BotMessager {
            }
         })
     }
-
-    async sendUnicast(roomId , message){
-        framework.webex.messages
-            .create({
-              text: message,
-              roomId: roomId,
-            })
-            .then((teams) => {
-              console.log("Report sent successfully");
-              return 'success';
-        }).catch((error) => {
-            console.log("Report failed to send",error);
-        });
-    }
-
 }
-
-export default BotMessager;

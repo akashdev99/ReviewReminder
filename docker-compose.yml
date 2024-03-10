@@ -9,5 +9,5 @@ services:
     # environment:
     #   MONGO_INITDB_ROOT_USERNAME: NileshBlog.Tech
     #   MONGO_INITDB_ROOT_PASSWORD: SpeakLouder
-    # volumes:
-    #   - ./db_data/:/data/db/
+    volumes:
+      - ./db_data/:/data/db/
